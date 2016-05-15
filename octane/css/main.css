@@ -30,6 +30,18 @@ body { font-family: 'HelveNueThin'; overflow: hidden; overflow-y: auto; font-siz
 	top: 30px;
 }
 
+#video {
+	z-index: 99999;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+#overlay3 {
+	z-index: 99999;
+	position: absolute;
+	margin: 8% 0 0 35%;
+}
 
 /*=============================================================*/
 /*========================== Responsive ==========================*/
