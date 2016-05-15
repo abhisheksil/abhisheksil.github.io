@@ -229,7 +229,7 @@
             });
 
             // Debug indicators
-            bgScene1.addIndicators();
+            // bgScene1.addIndicators();
 
             /***********************************************************/
             /********************* Scene 2 *********************/
@@ -269,7 +269,7 @@
             });
 
             // Debug indicators
-            bgScene2.addIndicators();
+            // bgScene2.addIndicators();
 
             /***********************************************************/
             /********************* Scene 3 *********************/
@@ -302,7 +302,7 @@
             .addTo(scrollMagicController);
 
             // Debug indicators
-            bgScene3.addIndicators();
+            // bgScene3.addIndicators();
 
             /***********************************************************/
             /********************* Scene 4 *********************/
