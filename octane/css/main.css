@@ -21,7 +21,7 @@ a { text-decoration: none; transition: all .3s ease-out; -webkit-transition: all
 	font-style: normal;
 }
 
-body { font-family: 'HelveNueThin'; overflow: hidden; overflow-y: auto; font-size:16px; }
+body { font-family: 'HelveNueThin'; overflow: hidden; overflow-y: auto; font-size:16px; background-color: #000000; }
 
 
 
