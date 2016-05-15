@@ -23,13 +23,6 @@ a { text-decoration: none; transition: all .3s ease-out; -webkit-transition: all
 
 body { font-family: 'HelveNueThin'; overflow: hidden; overflow-y: auto; font-size:16px; background-color: #000000; }
 
-#logo {
-	z-index: 99999;
-	position: fixed;
-	right: 30px;
-	top: 30px;
-}
-
 #video {
 	z-index: 99999;
 	position: absolute;
@@ -83,31 +76,50 @@ body { font-family: 'HelveNueThin'; overflow: hidden; overflow-y: auto; font-siz
 /*========================== Responsive ==========================*/
 /*=============================================================*/
 
-/* -------------------- Mobile */
+/**/
+.no-display { display: none; }
+
+/* -------------------- Mobile -------------------- */
+/* header */
+header { position: fixed; width: 100%; z-index: 99; }
+
 /* navigation */
 .nav-wrapper { display: none; }
 
 /* section */
-.section { width: 100%; min-height: 200px; /*background-color: #2e2e2e;*/ background-color: transparent; z-index: 9; background-repeat: no-repeat; background-position: left bottom; background-size: cover; }
-/*#section-1 { background-image: url('../images/Page1.png'); }*/
-#section-10 { z-index: 8; }
+section { width: 100%; min-height: 200px; background-color: #2e2e2e; z-index: 9; background-repeat: no-repeat; background-position: left bottom; background-size: cover; background-attachment: scroll; overflow: hidden; }
+section.section-parallax { background-position: 50% 0px; z-index: 8; }
+#section-4 #bg-element-1 { top:0; margin: 0; padding: 0; }
+#section-6 #bg-element-2 { top:0; margin: 0; padding: 0; }
+#section-10 { z-index: 7; }
 
-.section-parallax { width: 100%; height: 200px; background-repeat: no-repeat; background-position: 50% 0px; background-size: cover; background-attachment: scroll; }
-.section-parallax-1 { background-image: url('../images/Page2.png'); }
-.section-parallax-1 h2 { color: #ae2e2e; font-size: 74px; }
-.section-parallax-2 { background-image: url('../images/Page4.png'); }
-.section-parallax-3 { background-image: url('../images/Page6.png'); }
-.section-parallax-4 { background-image: url('../images/Page8.png'); }
-.section-parallax-5 { background-image: url('../images/Page10.png'); }
 
-/* Tablet */
+
+/* -------------------- Tablet -------------------- */
 @media screen  and (min-width:768px) {
-	.section-parallax { height: 400px; }
+	section { background-color: transparent; background-position: 50% 0px; }
+	#section-1 { background-image: url('../images/bg-tablet-page-1.png'); }
+	#section-2 { background-image: url('../images/bg-tablet-page-2.png'); }
+	#section-3 { background-image: url('../images/bg-tablet-page-3.png'); }
+	#section-5 { background-image: url('../images/bg-tablet-page-5.png'); }
+	#section-7 { background-image: url('../images/bg-tablet-page-7.png'); }
+	#section-8 { background-image: url('../images/bg-tablet-page-8.png'); }
+	#section-9 { background-image: url('../images/bg-tablet-page-9.png'); }
 }
 
-/* Desktop */
+
+
+/* -------------------- Desktop -------------------- */
 @media screen  and (min-width:992px) {
-	.nav-wrapper { display: block; position: fixed; left: 0px; top: 50%; z-index: 99; transition: ease 0.3s; -webkit-transition: ease 0.3s; -moz-transition: ease 0.3s; -ms-transition: ease 0.3s; -o-transition: ease 0.3s; margin-left:-230px; }
+	#section-1 { background-image: url('../images/bg-desktop-page-1.png'); }
+	#section-2 { background-image: url('../images/bg-desktop-page-2.png'); }
+	#section-3 { background-image: url('../images/bg-desktop-page-3.png'); }
+	#section-5 { background-image: url('../images/bg-desktop-page-5.png'); }
+	#section-7 { background-image: url('../images/bg-desktop-page-7.png'); }
+	#section-8 { background-image: url('../images/bg-desktop-page-8.png'); }
+	#section-9 { background-image: url('../images/bg-desktop-page-9.png'); }
+
+	.nav-wrapper { display: block; position: fixed; left: 0px; top: 50%; z-index: 98; transition: ease 0.3s; -webkit-transition: ease 0.3s; -moz-transition: ease 0.3s; -ms-transition: ease 0.3s; -o-transition: ease 0.3s; margin-left:-230px; }
 	.nav-wrapper ul, .nav-wrapper ol { list-style: none; margin: 0px; padding:0px; }
 	.nav-wrapper ul li a { display: block; text-decoration:none; overflow:hidden; background-color:rgba(0,0,0,0.7); padding-left:20px; text-transform:uppercase; letter-spacing:0.1em; color:#fff; font-size: 12px; border-bottom:1px solid #222; transition: ease 0.3s; -webkit-transition: ease 0.3s; -moz-transition: ease 0.3s; -ms-transition: ease 0.3s; -o-transition: ease 0.3s; }
 	.nav-wrapper ul li a span { display: inline-block; padding: 14px 0 0 0; }
@@ -117,7 +129,7 @@ body { font-family: 'HelveNueThin'; overflow: hidden; overflow-y: auto; font-siz
 	.nav-wrapper ul li a.active { background-color:rgba(109,5,21,0.7); }
 	.nav-wrapper ul li a.active img { background-color:rgba(109,5,21,1); }
 
-	.section-parallax { background-attachment: fixed; }
+	section.section-parallax { background-attachment: fixed; }
 }
 
 

@@ -26,6 +26,10 @@
                     }
             };
 
+
+            /***********************************************************/
+            /********************* Nice Scroll-Module *********************/
+            /***********************************************************/
             if(winWidth>=992){
                 var niceScroll = $("body,html").niceScroll({cursorcolor: "#000", cursorborder: "0px", railpadding: {right:0}, scrollspeed: 10, mousescrollstep: 15, cursorwidth: "8px", autohidemode: false, zindex:12});
             }
@@ -85,7 +89,9 @@
                         return false;
                     })
                 });
-                aTags.eq(0).trigger("click");
+                if(winWidth >= 992){
+                    aTags.eq(0).trigger("click");
+                }
             }
             function updateNavActiveHandler(param){
                 if(lastParam != param){
@@ -101,81 +107,100 @@
             /***********************************************************/
             /********************* Section-Module *********************/
             /***********************************************************/
+            var sectionData = [{ topDiagonal: 0, bottomDiagonal: 135, parallax: false },
+            { topDiagonal: 0, bottomDiagonal: 0, parallax: true },
+            { topDiagonal: 130, bottomDiagonal: 130, parallax: false },
+            { topDiagonal: 0, bottomDiagonal: 0, parallax: true },
+            { topDiagonal: 170, bottomDiagonal: 160, parallax: false },
+            { topDiagonal: 0, bottomDiagonal: 0, parallax: true },
+            { topDiagonal: 196, bottomDiagonal: 180, parallax: false },
+            { topDiagonal: 0, bottomDiagonal: 0, parallax: true },
+            { topDiagonal: 132, bottomDiagonal: 160, parallax: false },
+            { topDiagonal: 0, bottomDiagonal: 0, parallax: false }];
+
             $(window).load(function(e) {
-                setSectionHeightHandler();
-                setSectionPositionHandler();
+                manageSectionHandler();
             });
             $(window).resize(function(e) {
-                setSectionHeightHandler();
-                setSectionPositionHandler();
+                manageSectionHandler();
             });
-
-            setSectionHeightHandler();
-            setSectionPositionHandler();
+            manageSectionHandler();
 
             /*
-            1) keep parallax bg image in 1920x1200 dimension
-            2) keep content in little bit top from center in vertical manner
-            3) setting parallax section height rational basis image size
+            1) check topDiagonal & bottomDiagonal space in 1920
+            2) covert it as per 2800 : (diagonal space * 2800 / 1920)
+            3) set value in "sectionData" array
+            4) run a function and check each section
+            5) set section & content-wrapper height : auto
+            6) set section height, content position & content height
+            7) section bg image
+                1) desktop/tablet view - bg image with diagonal cut and without content
+                2) mobile view - bg image only a division strip image and background-color
+                3) make content position according to design
+            8) parallax-section bg image
+                1) full rectangle shape
+                2) desktop/tablet view - 1920x1200 dimension without text
+                3) mobile view - 768x480 dimension with text
             */
-            function setSectionHeightHandler(){
-                var styleCode = "";
+            function manageSectionHandler(){
                 var winWidth = $(window).width();
                 var winHeight = $(window).height();
+                var sections = $("section");
 
-                if(winWidth >= 992){
-                    $("section").css({'height':'auto'});
-                }
+                sections.css({'height':'auto'});
+                sections.children(".content-wrapper").css({'height':'auto'});
+
                 $("section").each(function(index, elem){
                     var section = $(this);
+                    var contentWrapper = section.children('.content-wrapper');
+                    var secData = sectionData[index];
+                    var secPrevData = sectionData[index-1];
+                    var secNextData = sectionData[index+1];
+
+                    var parallax = secData.parallax;
+                    var topDiagonal = Math.floor(secData.topDiagonal * 2800 / 1920);
+                    topDiagonal = Math.floor(topDiagonal * winWidth / 2800);
+                    var bottomDiagonal = Math.floor(secData.bottomDiagonal * 2800 / 1920);
+                    bottomDiagonal = Math.floor(bottomDiagonal * winWidth / 2800);
+                    
                     var height = Math.floor(winWidth * 1750 / 2800);
-                    if(winWidth >= 992 && index <=8){
+                    var contentHeight = height - topDiagonal - bottomDiagonal;
+
+                    if(winWidth >= 768 && index != 9){
                         section.css({'height':height});
+                        contentWrapper.css({'top':topDiagonal, 'height':contentHeight});
+                        // section margin-top
+                        if(parallax == false){
+                            sections.eq(index).css({'margin-top':-topDiagonal});
+                            sections.eq(index+1).css({'margin-top':-bottomDiagonal});
+                        }
+                    }else if(winWidth <= 767 && section.hasClass('section-parallax')){
+                        section.css({'height':height});
+                        contentWrapper.css({'top':0, 'height':height});
                     }
-                    styleCode += ".section-1:before{height:140px;}\n";
                 });
-                //$('#custom-style').html(styleCode);
             }
-            /*
-            1) first check condition for section
-            2) check negative margin-top to be set on section on 1920px width in browser by meeting the edges
-            3) figure out margin-top value basis on 2800px width in (value * 2800 / 1920) formula
-            4) get final value by putting in (windowWidth * new value / 2800) formula
-            5) assign new value as margin-top to section
-            6) it will keep section conneted with edges in responsive
-            */
-            function setSectionPositionHandler(){
+
+
+            /***********************************************************/
+            /********************* Height Responsive - Module *********************/
+            /***********************************************************/
+            function scaleContentByHeight(percent, elem, elemWidth, elemHeight){
                 var winWidth = $(window).width();
-                var winHeight = $(window).height();
-                $("section").each(function(index, elem){
-                    var section = $(this);
-                    if(index == 1){
-                        var topMargin = Math.ceil(winWidth * 205 / 2800) * -1;
-                        section.css({'margin-top':topMargin});
-                    }else if(index == 2){
-                        var topMargin = Math.ceil(winWidth * 255 / 2800) * -1;
-                        section.css({'margin-top':topMargin});
-                    }else if(index == 3){
-                        var topMargin = Math.ceil(winWidth * 220 / 2800) * -1;
-                        section.css({'margin-top':topMargin});
-                    }else if(index == 5){
-                        var topMargin = Math.ceil(winWidth * 262 / 2800) * -1;
-                        section.css({'margin-top':topMargin});
-                    }else if(index == 6){
-                        var topMargin = Math.ceil(winWidth * 292 / 2800) * -1;
-                        section.css({'margin-top':topMargin});
-                    }else if(index == 7){
-                        var topMargin = Math.ceil(winWidth * 270 / 2800) * -1;
-                        section.css({'margin-top':topMargin});
-                    }else if(index == 8){
-                        var topMargin = Math.ceil(winWidth * 190 / 2800) * -1;
-                        section.css({'margin-top':topMargin});
-                    }else if(index == 9){
-                        var topMargin = Math.ceil(winWidth * 190 / 2800) * -1;
-                        section.css({'margin-top':topMargin});
-                    }
-                });
+                var targetHeight = Math.floor(winWidth * 1750 / 2800);
+                var percentageScale = Math.floor(targetHeight * percent / 100);
+                var totalHeight = targetHeight + percentageScale;
+                var totalWidth = Math.floor(totalHeight * elemWidth / elemHeight);
+
+                var leftOffset =  Math.floor((totalWidth - winWidth) * -0.5);
+                leftOffset = (leftOffset >= 0) ? 0 : leftOffset;
+                $(elem).css({'height':totalHeight});
+                $(elem).css({'left':leftOffset});
+
+                return {'percentageScale':-percentageScale};
             }
+            var obj1 = scaleContentByHeight(0, "#bg-element-1", 536, 336);
+            var obj2 = scaleContentByHeight(0, "#bg-element-2", 536, 336);
 
 
 
@@ -183,6 +208,8 @@
             /********************* Init Controller *********************/
             /***********************************************************/
             if(isMobile.any() || winWidth <= 991){
+                $('#bg-element-1')[0].play();
+                $('#bg-element-2')[0].play();
                 return false;
             }
             var scrollMagicController = new ScrollMagic.Controller({
@@ -222,9 +249,9 @@
             .addTo(scrollMagicController)
             .on("progress", function (e) {
                 if(e.progress.toFixed(3) == 0.000){
-                    updateNavActiveHandler("#nav-1");
+                    //updateNavActiveHandler("#nav-1");
                 }else if(e.progress.toFixed(3) <= 0.010){
-                    updateNavActiveHandler("#nav-2");
+                    //updateNavActiveHandler("#nav-2");
                 }
             });
 
@@ -237,12 +264,12 @@
             // variables
             var bgDuration2 = $("#section-3").innerHeight() + $("#section-4").innerHeight() * 1;
             // Create Animation
-            var bgTween2 = TweenMax.fromTo("#section-4", 1,
+            var bgTween2 = TweenMax.fromTo("#bg-element-1", 1,
             {
-                backgroundPosition: "50% 100px"
+                top: 0
             },
             {
-                backgroundPosition: "50% -200px",
+                top: obj1.percentageScale,
                 repeat: 0,
                 yoyo: false,
                 ease: Power0.easeNone
@@ -260,11 +287,17 @@
             })
             .setTween(bgTimeline2)
             .addTo(scrollMagicController)
+            .on("enter", function (e) {
+                $('#bg-element-1')[0].play();
+            })
+            .on("leave", function (e) {
+                $('#bg-element-1')[0].pause();
+            })
             .on("progress", function (e) {
                 if(e.progress.toFixed(3) == 0.000){
-                    updateNavActiveHandler("#nav-2");
+                    //updateNavActiveHandler("#nav-2");
                 }else if(e.progress.toFixed(3) <= 0.010){
-                    updateNavActiveHandler("#nav-3");
+                    //updateNavActiveHandler("#nav-3");
                 }
             });
 
@@ -277,12 +310,12 @@
             // variables
             var bgDuration3 = $("#section-5").innerHeight() + $("#section-6").innerHeight() * 1;
             // Create Animation
-            var bgTween3 = TweenMax.fromTo("#section-6", 1,
+            var bgTween3 = TweenMax.fromTo("#bg-element-2", 1,
             {
-                backgroundPosition: "50% 100px"
+                top: 0
             },
             {
-                backgroundPosition: "50% -200px",
+                top: obj2.percentageScale,
                 repeat: 0,
                 yoyo: false,
                 ease: Power0.easeNone
@@ -299,7 +332,13 @@
                 duration: bgDuration3
             })
             .setTween(bgTimeline3)
-            .addTo(scrollMagicController);
+            .addTo(scrollMagicController)
+            .on("enter", function (e) {
+                $('#bg-element-2')[0].play();
+            })
+            .on("leave", function (e) {
+                $('#bg-element-2')[0].pause();
+            });
 
             // Debug indicators
             // bgScene3.addIndicators();
